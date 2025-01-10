@@ -13,13 +13,14 @@ export function Timer(): TimerApi {
   // params
   let _interval = Infinity;
   let _func = () => {};
-  let _tick = (left: number) => {};
+  let _tick = (_: number) => {};
   // state
   let count = _interval;
   let time = SECOND;
   let timerId: any = 0;
 
   function start() {
+    clearTimeout(timerId);
     timerId = setTimeout(function request() {
       time -= STEP;
 
@@ -45,7 +46,9 @@ export function Timer(): TimerApi {
 
   function setTime(interval: number) {
     _interval = interval;
-    count = _interval; // reset
+    // reset
+    count = _interval;
+    time = SECOND;
   }
 
   function setCallback(fn: () => void) {

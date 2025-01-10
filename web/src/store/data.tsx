@@ -11,6 +11,8 @@ export type State = {
   secondsLeft: number;
   currentSlide: number;
   slides: string[];
+  reset: number;
+  pause: boolean;
 };
 
 export type Actions = {
@@ -18,7 +20,9 @@ export type Actions = {
   setTimePreset: (time: number) => void;
   setTimeValue: (time: number) => void;
   setData: (key: string, value: any) => void;
-  nextSlide: () => void;
+  nextSlide: (dir?: number) => void;
+  resetTimer: () => void;
+  toggleTimer: () => void;
 };
 
 const initialState: State = {
@@ -28,6 +32,8 @@ const initialState: State = {
   secondsLeft: 0,
   currentSlide: 0,
   slides: [],
+  reset: 0,
+  pause: false,
 };
 
 export const initMenuStore = (): State => {
@@ -42,9 +48,21 @@ export function createMenuStore(initState: State = initialState) {
     setTimePreset: (time: number) => set({ time, secondsLeft: time }),
     setTimeValue: (time: number) =>
       set({ timeCustom: time, secondsLeft: time }),
-    nextSlide: () =>
+    resetTimer: () =>
+      set((s) => ({
+        reset: Math.random(),
+        secondsLeft: s.time === -1 ? s.timeCustom : s.time,
+      })),
+    nextSlide: (dir: number = 1) =>
       set((state) => {
-        return { currentSlide: (state.currentSlide + 1) % state.slides.length };
+        const a =
+          state.currentSlide + dir < 0
+            ? state.slides.length - 1
+            : state.currentSlide + dir;
+        return {
+          currentSlide: a % state.slides.length,
+        };
       }),
+    toggleTimer: () => set((s) => ({ pause: !s.pause })),
   }));
 }

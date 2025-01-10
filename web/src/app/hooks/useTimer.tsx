@@ -1,24 +1,24 @@
+import { useDataStore } from "@/store/providers/data";
 import { Timer, TimerApi } from "@/utils/timer";
 import { useEffect, useRef } from "react";
 
-export function useTimer(
-  interval: number,
-  onEnd: () => void,
-  onTick: (left: number) => void
-) {
-  const timer = useRef<TimerApi>(null!);
+export function useTimer(onEnd: () => void, onTick: (left: number) => void) {
+  const isTimerPaused = useDataStore((s) => s.pause);
+  const time = useDataStore((s) => s.time);
+  const reset = useDataStore((s) => s.reset);
+  const seconds = useDataStore((s) => s.timeCustom);
+  const timer = useRef<TimerApi>(Timer());
+
+  const interval = time === -1 ? seconds : time;
 
   useEffect(() => {
-    if (timer.current) {
-      timer.current.pause();
-    }
-
-    timer.current = Timer();
+    timer.current.pause();
+    timer.current.setTime(interval);
     timer.current.setCallback(onEnd);
     timer.current.setTickCallback(onTick);
-    timer.current.setTime(interval);
-    timer.current.start();
-  }, [interval]);
+
+    if (!isTimerPaused) timer.current.start();
+  }, [interval, reset]);
 
   useEffect(
     () => () => {
@@ -26,5 +26,10 @@ export function useTimer(
       timer.current.setTime(interval);
     },
     []
+  );
+
+  useEffect(
+    () => (isTimerPaused ? timer.current.pause?.() : timer.current.start?.()),
+    [isTimerPaused]
   );
 }
