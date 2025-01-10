@@ -11,7 +11,7 @@ export type TimerApi = {
 
 export function Timer(): TimerApi {
   // params
-  let _interval = 999;
+  let _interval = Infinity;
   let _func = () => {};
   let _tick = (left: number) => {};
   // state

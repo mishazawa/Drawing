@@ -20,5 +20,11 @@ export function useTimer(
     timer.current.start();
   }, [interval]);
 
-  useEffect(() => () => timer.current.pause(), []);
+  useEffect(
+    () => () => {
+      timer.current.pause();
+      timer.current.setTime(interval);
+    },
+    []
+  );
 }
