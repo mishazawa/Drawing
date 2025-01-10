@@ -9,6 +9,8 @@ export type State = {
   timeCustom: number;
   // ui
   secondsLeft: number;
+  currentSlide: number;
+  slides: string[];
 };
 
 export type Actions = {
@@ -16,6 +18,7 @@ export type Actions = {
   setTimePreset: (time: number) => void;
   setTimeValue: (time: number) => void;
   setData: (key: string, value: any) => void;
+  nextSlide: () => void;
 };
 
 const initialState: State = {
@@ -23,6 +26,8 @@ const initialState: State = {
   time: TIME_CONFIG[0][1],
   timeCustom: 1,
   secondsLeft: 0,
+  currentSlide: 0,
+  slides: [],
 };
 
 export const initMenuStore = (): State => {
@@ -37,5 +42,9 @@ export function createMenuStore(initState: State = initialState) {
     setTimePreset: (time: number) => set({ time, secondsLeft: time }),
     setTimeValue: (time: number) =>
       set({ timeCustom: time, secondsLeft: time }),
+    nextSlide: () =>
+      set((state) => {
+        return { currentSlide: (state.currentSlide + 1) % state.slides.length };
+      }),
   }));
 }
