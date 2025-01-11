@@ -46,7 +46,9 @@ export function Menu() {
         <StudioModeValues />
       </If>
       <InputFolder />
-      <ButtonLink href="/viewer">Start</ButtonLink>
+      <div>
+        <ButtonLink href="/viewer">Start</ButtonLink>
+      </div>
     </div>
   );
 }
