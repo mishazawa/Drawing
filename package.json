@@ -1,0 +1,9 @@
+{
+  "name": "drawing",
+  "version": "1.0.0",
+  "description": "Gesture drawing timer",
+  "scripts": {
+    "deploy": "firebase deploy --only hosting",
+    "build": "cd desktop && npm run make"
+  }
+}
