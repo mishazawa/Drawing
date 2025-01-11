@@ -1,3 +1,5 @@
+"use client";
+
 import { useDataStore } from "@/store/providers/data";
 import { ButtonControls } from "./Button";
 import If from "@/utils/If";

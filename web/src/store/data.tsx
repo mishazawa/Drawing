@@ -10,7 +10,7 @@ export type State = {
   // ui
   secondsLeft: number;
   currentSlide: number;
-  slides: string[];
+  slides: File[];
   reset: number;
   pause: boolean;
 };
