@@ -10,3 +10,20 @@ export function formatSeconds(value: number) {
 function leftFillNum(num: number, target: number = 2) {
   return num.toString().padStart(target, "0");
 }
+
+export function isDesktop() {
+  return global.window.electron !== undefined;
+}
+
+export function shuffle(array: any[]) {
+  let idx = array.length;
+  const copy = [...array];
+
+  while (idx != 0) {
+    const rnd = Math.floor(Math.random() * idx);
+    idx--;
+
+    [copy[idx], copy[rnd]] = [copy[rnd], copy[idx]];
+  }
+  return copy;
+}

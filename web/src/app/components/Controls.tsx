@@ -2,7 +2,7 @@
 
 import { useDataStore } from "@/store/providers/data";
 import { ButtonControls } from "./Button";
-import If from "@/utils/If";
+import If from "@/app/components/If";
 import { LeftArrow, Pause, Play, RightArrow } from "./Icons";
 
 export function Controls() {

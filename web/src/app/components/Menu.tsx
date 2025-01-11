@@ -1,11 +1,12 @@
 "use client";
 
-import If from "@/utils/If";
+import If from "@/app/components/If";
 
 import { MODE_CLASS, MODE_TIME, TIME_CONFIG } from "@/utils/constants";
 import { ButtonControls, ButtonLink } from "./Button";
 import { useDataStore } from "@/store/providers/data";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
+import { shuffle } from "@/utils/misc";
 
 export function Menu() {
   const mode = useDataStore((s) => s.mode);
@@ -45,6 +46,9 @@ export function Menu() {
       <If v={mode === MODE_CLASS}>
         <StudioModeValues />
       </If>
+      <div>
+        <Shuffle />
+      </div>
       <InputFolder />
       <div>
         <ButtonLink href="/viewer">Start</ButtonLink>
@@ -110,15 +114,27 @@ function StudioModeValues() {
 function InputFolder() {
   const inputRef = useRef<HTMLInputElement>(null!);
   const set = useDataStore((s) => s.setData);
-  const slides = useDataStore((s) => s.slides);
+
+  const originalSlides = useDataStore((s) => s.originalSlides);
+  const isShuffle = useDataStore((s) => s.shuffle);
+
   function openFolder() {
-    if (window.electron !== undefined) return;
     inputRef.current.click();
   }
 
   function onFiles(e: ChangeEvent<HTMLInputElement>) {
     set("slides", e.currentTarget.files);
+    set("originalSlides", e.currentTarget.files);
   }
+
+  useEffect(() => {
+    set("currentSlide", 0);
+    if (!isShuffle) {
+      set("slides", originalSlides);
+      return;
+    }
+    set("slides", shuffle(originalSlides));
+  }, [isShuffle, originalSlides]);
 
   return (
     <div className="flex gap-4">
@@ -133,8 +149,49 @@ function InputFolder() {
       />
 
       <span className="inline-block pt-2">
-        <If v={!!slides.length}>{slides.length} images</If>
+        <If v={!!originalSlides.length}>{originalSlides.length} images</If>
       </span>
     </div>
+  );
+}
+
+function Shuffle() {
+  const isShuffle = useDataStore((s) => s.shuffle);
+  const setShuffle = useDataStore((s) => s.setData);
+
+  return (
+    <fieldset>
+      <legend className="sr-only">Shuffle</legend>
+
+      <div className="space-y-2">
+        <label
+          htmlFor="Option1"
+          className="flex cursor-pointer items-start gap-4 rounded-lg border border-gray-200 p-4 transition hover:bg-gray-50 has-[:checked]:bg-blue-50"
+        >
+          <div className="flex items-center">
+            &#8203;
+            <input
+              checked={isShuffle}
+              type="checkbox"
+              className="size-4 rounded border-gray-300"
+              id="Option1"
+              onChange={({ target: { checked } }) =>
+                setShuffle("shuffle", checked)
+              }
+            />
+          </div>
+
+          <div>
+            <strong className="font-medium text-gray-900">
+              Shuffle images
+            </strong>
+
+            <p className="mt-1 text-pretty text-sm text-gray-700">
+              Show images in random order
+            </p>
+          </div>
+        </label>
+      </div>
+    </fieldset>
   );
 }

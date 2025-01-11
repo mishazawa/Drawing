@@ -11,15 +11,17 @@ export type State = {
   secondsLeft: number;
   currentSlide: number;
   slides: File[];
+  originalSlides: File[];
   reset: number;
   pause: boolean;
+  shuffle: boolean;
 };
 
 export type Actions = {
   setMode: (mode: TimingMode) => void;
   setTimePreset: (time: number) => void;
   setTimeValue: (time: number) => void;
-  setData: (key: string, value: any) => void;
+  setData: (key: keyof State, value: any) => void;
   nextSlide: (dir?: number) => void;
   resetTimer: () => void;
   toggleTimer: () => void;
@@ -32,8 +34,10 @@ const initialState: State = {
   secondsLeft: 0,
   currentSlide: 0,
   slides: [],
+  originalSlides: [],
   reset: 0,
   pause: false,
+  shuffle: false,
 };
 
 export const initMenuStore = (): State => {

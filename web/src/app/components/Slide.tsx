@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import If from "@/utils/If";
+import If from "@/app/components/If";
 import { useDataStore } from "@/store/providers/data";
 import { useEffect, useState } from "react";
 
