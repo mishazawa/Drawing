@@ -8,3 +8,8 @@ export const TIME_CONFIG: Array<[string, number]> = [
 ];
 export const MODE_TIME = "time";
 export const MODE_CLASS = "class";
+
+export const KEY_SPACE = "Space";
+export const KEY_LEFT = "ArrowLeft";
+export const KEY_RIGHT = "ArrowRight";
+export const KEY_ESC = "Escape";

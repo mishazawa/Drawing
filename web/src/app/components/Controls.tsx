@@ -4,6 +4,8 @@ import { useDataStore } from "@/store/providers/data";
 import { ButtonControls } from "./Button";
 import If from "@/app/components/If";
 import { LeftArrow, Pause, Play, RightArrow } from "./Icons";
+import { useHotkeys } from "@/app/hooks/useHotkeys";
+import { useEffect } from "react";
 
 export function Controls() {
   const pause = useDataStore((s) => s.pause);
@@ -11,11 +13,16 @@ export function Controls() {
   const next = useDataStore((s) => s.nextSlide);
   const resetTimer = useDataStore((s) => s.resetTimer);
   const togglePause = useDataStore((s) => s.toggleTimer);
+  const setData = useDataStore((s) => s.setData);
+
+  useHotkeys();
 
   function nextSlide(v: number) {
     next(v);
     resetTimer();
   }
+
+  useEffect(() => () => setData("pause", false), []);
 
   return (
     <>
