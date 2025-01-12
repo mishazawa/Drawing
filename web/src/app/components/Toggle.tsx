@@ -4,9 +4,15 @@ type ToggleProps = {
   onChange?: (value: boolean) => void;
   text: string;
   leftText?: string;
+  value: boolean;
 };
 
-export function Toggle({ onChange = () => {}, text, leftText }: ToggleProps) {
+export function Toggle({
+  value,
+  onChange = () => {},
+  text,
+  leftText,
+}: ToggleProps) {
   return (
     <label className="inline-flex items-center cursor-pointer gap-5">
       <If v={!!leftText}>
@@ -16,7 +22,7 @@ export function Toggle({ onChange = () => {}, text, leftText }: ToggleProps) {
       </If>
       <input
         type="checkbox"
-        value=""
+        checked={value}
         className="sr-only peer"
         onChange={({ target: { checked } }) => onChange(checked)}
       />
