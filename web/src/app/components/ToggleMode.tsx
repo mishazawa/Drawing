@@ -1,35 +1,21 @@
+"use client";
 import { useDataStore } from "@/store/providers/data";
 import { MODE_CLASS, MODE_TIME } from "@/utils/constants";
+import { Toggle } from "./Toggle";
 
 export function ToggleMode() {
-  const mode = useDataStore((s) => s.mode);
   const set = useDataStore((s) => s.setMode);
+
+  function toggleMode(value: boolean) {
+    set(value ? MODE_CLASS : MODE_TIME);
+  }
+
   return (
     <div className="flex items-center gap-x-4">
-      <label htmlFor="1">
-        <div className="flex gap-x-2">
-          <input
-            name="mode"
-            type="radio"
-            id="1"
-            checked={mode === MODE_TIME}
-            onChange={() => set(MODE_TIME)}
-          />
-          {MODE_TIME}
-        </div>
-      </label>
-      <label htmlFor="2">
-        <div className="flex gap-x-2">
-          <input
-            name="mode"
-            type="radio"
-            id="2"
-            checked={mode === MODE_CLASS}
-            onChange={() => set(MODE_CLASS)}
-          />
-          {MODE_CLASS}
-        </div>
-      </label>
+      <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+        Time
+      </span>
+      <Toggle text="Class" onChange={toggleMode} />
     </div>
   );
 }
