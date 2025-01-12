@@ -7,6 +7,10 @@ export function formatSeconds(value: number) {
   );
 }
 
+export function calculatePercent(a: number, b: number) {
+  return Math.floor((a / b) * 100);
+}
+
 function leftFillNum(num: number, target: number = 2) {
   return num.toString().padStart(target, "0");
 }

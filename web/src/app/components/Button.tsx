@@ -6,14 +6,7 @@ type ButtonLinkProps = {
   children: ReactNode | string;
 };
 export function ButtonLink({ href, children }: ButtonLinkProps) {
-  return (
-    <Link
-      href={href}
-      className="inline-block px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
-    >
-      {children}
-    </Link>
-  );
+  return <Link href={href}>{children}</Link>;
 }
 
 type ButtonControlsProps = {
@@ -29,9 +22,10 @@ export function ButtonControls({
   return (
     <button
       onClick={onClick}
+      type="button"
       className={
         className +
-        " text-base focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-700 hover:text-teal-100 bg-teal-100 text-teal-700 border duration-200 ease-in-out border-teal-600 transition"
+        " inline-flex items-center px-4 py-2 text-sm font-medium bg-transparent border-blue-200 text-blue-200 focus:z-10 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
       }
     >
       <div className="flex leading-5">{children}</div>

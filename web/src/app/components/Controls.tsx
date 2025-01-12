@@ -19,19 +19,22 @@ export function Controls() {
 
   return (
     <>
-      <div>
-        <div className="p-5">
-          <div className="flex justify-center items-baseline flex-wrap">
-            <div className="flex m-2">
+      <div className="p-5">
+        <div className="flex justify-center items-baseline flex-wrap">
+          <div>
+            <div
+              className="inline-flex rounded-s-lg rounded-e-lg shadow-sm bg-gradient-to-r from-blue-500 to-blue-600"
+              role="group"
+            >
               <ButtonControls
-                className="rounded-r-none"
+                className="border rounded-s-lg"
                 onClick={() => nextSlide(-1)}
               >
                 <LeftArrow />
               </ButtonControls>
               <ButtonControls
                 onClick={togglePause}
-                className="rounded-r-none rounded-l-none border-l-0 border-r-0"
+                className="border-t border-b"
               >
                 <If v={!pause}>
                   <Pause />
@@ -41,7 +44,7 @@ export function Controls() {
                 </If>
               </ButtonControls>
               <ButtonControls
-                className="rounded-l-none"
+                className="border rounded-e-lg"
                 onClick={() => nextSlide(1)}
               >
                 <RightArrow />
