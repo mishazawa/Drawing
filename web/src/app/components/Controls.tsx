@@ -30,7 +30,7 @@ export function Controls() {
         <div className="flex justify-center items-baseline flex-wrap">
           <div>
             <div
-              className="inline-flex rounded-s-lg rounded-e-lg shadow-sm bg-gradient-to-r from-blue-500 to-blue-600"
+              className="inline-flex rounded-s-lg rounded-e-lg shadow-sm bg-slate-50"
               role="group"
             >
               <ButtonControls

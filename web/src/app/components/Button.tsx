@@ -25,7 +25,7 @@ export function ButtonControls({
       type="button"
       className={
         className +
-        " inline-flex items-center px-4 py-2 text-sm font-medium bg-transparent border-blue-200 text-blue-200 focus:z-10 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+        " inline-flex items-center px-4 py-2 text-sm font-medium bg-transparent border-slate-200 text-slate-500 focus:z-10 hover:text-slate-800 focus:text-slate-500 dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
       }
     >
       <div className="flex leading-5">{children}</div>
