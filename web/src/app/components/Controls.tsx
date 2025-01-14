@@ -6,6 +6,7 @@ import If from "@/app/components/If";
 import { LeftArrow, Pause, Play, RightArrow } from "./Icons";
 import { useHotkeys } from "@/app/hooks/useHotkeys";
 import { useEffect } from "react";
+import { useHideControls } from "../hooks/useHideControls";
 
 export function Controls() {
   const pause = useDataStore((s) => s.pause);
@@ -16,6 +17,7 @@ export function Controls() {
   const setData = useDataStore((s) => s.setData);
 
   useHotkeys();
+  const hideUi = useHideControls();
 
   function nextSlide(v: number) {
     next(v);
@@ -26,7 +28,7 @@ export function Controls() {
 
   return (
     <>
-      <div className="p-5">
+      <div className={hideUi ? "hidden" : "" + " p-5 transition-all"}>
         <div className="flex justify-center items-baseline flex-wrap">
           <div>
             <div
