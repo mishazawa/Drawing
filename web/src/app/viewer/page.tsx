@@ -1,8 +1,9 @@
 import { ProgressBar, Timer } from "@/app/components/Timer";
 import { ButtonLink } from "@/app/components/Button";
-import { Slide } from "../components/Slide";
-import { Controls } from "../components/Controls";
-import { LeftArrow } from "../components/Icons";
+import { Slide } from "@/app/components/Slide";
+import { LeftArrow } from "@/app/components/Icons";
+import { EventScreenHandler } from "@/app/components/EventScreenHandler";
+import { Controls } from "@/app/components/ControlsHandler";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
           <ProgressBar />
         </div>
       </div>
+      <EventScreenHandler />
     </>
   );
 }

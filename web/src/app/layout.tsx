@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Drawing",
+  title: "Drawing dayo!!",
   description: "Pose drawing timer",
 };
 

@@ -1,5 +1,5 @@
 type Electron = {
-  toElectron: () => void;
+  preventSleep: (val: boolean) => void;
 };
 
 declare global {

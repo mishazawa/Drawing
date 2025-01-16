@@ -1,12 +1,12 @@
 "use client";
 
+import { useEffect } from "react";
 import { useDataStore } from "@/store/providers/data";
 import { ButtonControls } from "./Button";
 import If from "@/app/components/If";
 import { LeftArrow, Pause, Play, RightArrow } from "./Icons";
-import { useHotkeys } from "@/app/hooks/useHotkeys";
-import { useEffect } from "react";
-import { useHideControls } from "../hooks/useHideControls";
+
+import { useHideControls } from "@/app/hooks/useHideControls";
 
 export function Controls() {
   const pause = useDataStore((s) => s.pause);
@@ -16,7 +16,6 @@ export function Controls() {
   const togglePause = useDataStore((s) => s.toggleTimer);
   const setData = useDataStore((s) => s.setData);
 
-  useHotkeys();
   const hideUi = useHideControls();
 
   function nextSlide(v: number) {
