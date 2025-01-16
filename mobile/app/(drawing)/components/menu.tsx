@@ -23,6 +23,11 @@ export function Menu() {
             <Text>Start</Text>
           </Pressable>
         </Link>
+        <Link href="/viewer2" asChild>
+          <Pressable>
+            <Text>Start2</Text>
+          </Pressable>
+        </Link>
       </View>
     </SafeAreaView>
   );
