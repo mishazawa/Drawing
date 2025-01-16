@@ -1,23 +1,30 @@
 import { Link } from "expo-router";
 import { FlatList, Pressable, Text, View } from "react-native";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 export function Menu() {
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
-      <Text>Menu</Text>
-      <TimeModeValues />
-      <Link href="/viewer">
-        <Pressable>
-          <Text>Start</Text>
-        </Pressable>
-      </Link>
-    </View>
+      <View
+        style={{
+          flex: 1,
+          paddingBottom: 25,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text>Menu</Text>
+        <TimeModeValues />
+        <Link href="/viewer" asChild>
+          <Pressable>
+            <Text>Start</Text>
+          </Pressable>
+        </Link>
+      </View>
+    </SafeAreaView>
   );
 }
 
