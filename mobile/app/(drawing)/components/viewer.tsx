@@ -1,7 +1,11 @@
 import { View, StyleSheet, FlatList, useWindowDimensions } from "react-native";
 
 import { IfNotWeb, IfWeb } from "./utils";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import {
+  Directions,
+  Gesture,
+  GestureDetector,
+} from "react-native-gesture-handler";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -19,7 +23,99 @@ const DATA = [
   { id: 5, image: require("../../../assets/images/test/5.png") },
 ];
 
+const DIR: Record<any, number> = {
+  [Directions.LEFT]: 1,
+  [Directions.RIGHT]: -1,
+};
+
 export function Viewer() {
+  const scale = useSharedValue(IMAGE_ZOOM_MIN);
+  const savedScale = useSharedValue(IMAGE_ZOOM_MIN);
+  const offset = useSharedValue({ x: 0, y: 0 });
+  const start = useSharedValue({ x: 0, y: 0 });
+
+  const pinchGesture = Gesture.Pinch()
+    .onUpdate((e) => {
+      scale.value = clamp(
+        savedScale.value * e.scale,
+        IMAGE_ZOOM_MIN,
+        IMAGE_ZOOM_MAX
+      );
+    })
+    .onEnd(() => {
+      savedScale.value = scale.value;
+      if (savedScale.value <= IMAGE_ZOOM_MIN) {
+        offset.value = { x: 0, y: 0 };
+        start.value = { x: 0, y: 0 };
+      }
+    });
+
+  const panGesture = Gesture.Pan()
+    .averageTouches(true)
+    .minPointers(2)
+    .simultaneousWithExternalGesture(pinchGesture)
+    .onUpdate((e) => {
+      offset.value = {
+        x: e.translationX + start.value.x,
+        y: e.translationY + start.value.y,
+      };
+    })
+    .onEnd(() => {
+      start.value = {
+        x: offset.value.x,
+        y: offset.value.y,
+      };
+    });
+
+  const [idx, setIdx] = useState(0);
+
+  const item = DATA[idx];
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { translateX: offset.value.x },
+        { translateY: offset.value.y },
+        { scale: scale.value },
+      ],
+    };
+  });
+
+  function onSwipe(direction: number) {
+    const i = (idx + DIR[direction]) % DATA.length;
+    savedScale.value = IMAGE_ZOOM_MIN;
+    scale.value = IMAGE_ZOOM_MIN;
+    offset.value = { x: 0, y: 0 };
+    start.value = { x: 0, y: 0 };
+    setIdx(i < 0 ? DATA.length - 1 : i);
+  }
+
+  const flingGestureR = Gesture.Fling()
+    .direction(Directions.LEFT)
+    .onEnd(() => {
+      runOnJS(onSwipe)(Directions.LEFT);
+    });
+  const flingGestureL = Gesture.Fling()
+    .direction(Directions.RIGHT)
+    .onEnd(() => {
+      runOnJS(onSwipe)(Directions.RIGHT);
+    });
+
+  const composed = Gesture.Exclusive(
+    Gesture.Race(pinchGesture, panGesture),
+    Gesture.Race(flingGestureR, flingGestureL)
+  );
+
+  return (
+    <View style={[styles.container, styles.carousel]}>
+      <GestureDetector gesture={composed}>
+        <Slide {...item} animatedStyles={animatedStyles} />
+      </GestureDetector>
+    </View>
+  );
+}
+
+export function XViewer() {
   const scale = useSharedValue(IMAGE_ZOOM_MIN);
   const savedScale = useSharedValue(IMAGE_ZOOM_MIN);
   const offset = useSharedValue({ x: 0, y: 0 });
