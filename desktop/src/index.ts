@@ -23,10 +23,12 @@ const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     icon: "../images/icon.png",
-    height: 720,
+    height: 1080,
     width: 1280,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      nodeIntegration: false,
+      contextIsolation: true,
     },
   });
 
@@ -96,15 +98,20 @@ function setSessionPermissions() {
 function handleEvents() {
   let preventSleepId = -1;
 
+  stopIfExists(preventSleepId);
+  ipcMain.removeHandler("prevent-sleep");
+
   ipcMain.handle("prevent-sleep", async (_, value: boolean) => {
     if (value) {
-      if (powerSaveBlocker.isStarted(preventSleepId))
-        powerSaveBlocker.stop(preventSleepId);
+      stopIfExists(preventSleepId);
       preventSleepId = powerSaveBlocker.start("prevent-display-sleep");
       return;
     }
 
-    if (powerSaveBlocker.isStarted(preventSleepId))
-      powerSaveBlocker.stop(preventSleepId);
+    stopIfExists(preventSleepId);
   });
+}
+
+function stopIfExists(id: number) {
+  if (powerSaveBlocker.isStarted(id)) powerSaveBlocker.stop(id);
 }
