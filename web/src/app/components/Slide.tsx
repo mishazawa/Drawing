@@ -6,10 +6,13 @@ import If from "@/app/components/If";
 import { useDataStore } from "@/store/providers/data";
 import { useEffect, useState } from "react";
 
+import { usePanZoom } from "@/app/hooks/usePanZoom";
+
 export function Slide() {
   const slides = useDataStore((s) => s.slides);
   const current = useDataStore((s) => s.currentSlide);
   const [src, set] = useState("");
+
   useEffect(() => {
     if (!slides[current]) return;
 
@@ -26,11 +29,14 @@ export function Slide() {
     reader.readAsDataURL(slides[current]);
   }, [current, slides]);
 
+  const [image] = usePanZoom([src]);
+
   return (
     <>
       <If v={!!src}>
-        <div className="flex-1 w-full relative flex justify-center align-center">
+        <div className="flex-1 w-full relative flex justify-center align-center overflow-hidden">
           <Image
+            ref={image}
             className="object-scale-down object-center"
             src={src}
             fill
