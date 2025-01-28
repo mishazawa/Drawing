@@ -5,4 +5,5 @@ import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("electron", {
   preventSleep: (val: boolean) => ipcRenderer.send("prevent-sleep", val),
+  openExternal: (val: string) => ipcRenderer.send("open-external", val),
 });
