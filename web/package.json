@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0",
     "next": "15.1.4",
     "panzoom": "^9.4.3",
     "react": "^19.0.0",

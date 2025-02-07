@@ -1,5 +1,6 @@
 import { app, BrowserWindow, Menu, MenuItem } from "electron";
 import { noop, withMainWindow } from "./utils";
+import { getState, setState } from "./state";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -28,6 +29,31 @@ export function createMenu() {
               },
               { type: "separator" },
               { role: "quit" },
+            ],
+          },
+          {
+            label: "Settings",
+            submenu: [
+              {
+                label: "Hotkeys",
+                toolTip: "Enable/disable hotkeys",
+                type: "checkbox",
+                checked: getState().hotkeysEnabled,
+                accelerator: isMac ? "Alt+Cmd+K" : "Alt+Shift+K",
+                click({ checked }: MenuItem) {
+                  setState({ hotkeysEnabled: checked });
+                },
+              },
+              {
+                label: "Autozoom",
+                toolTip: "Enable/disable zooming to subject",
+                type: "checkbox",
+                checked: getState().autozoomEnabled,
+                accelerator: isMac ? "Alt+Cmd+L" : "Alt+Shift+L",
+                click({ checked }: MenuItem) {
+                  setState({ autozoomEnabled: checked });
+                },
+              },
             ],
           },
         ]

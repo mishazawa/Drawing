@@ -3,7 +3,7 @@ import { getState } from "./state";
 
 export function noop() {}
 
-export function withMainWindow() {
+export function withMainWindow(): Promise<BrowserWindow> {
   return new Promise((res, rej) => {
     const state = getState();
     const win = BrowserWindow.fromId(state.mainWindowId);

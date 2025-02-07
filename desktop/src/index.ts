@@ -1,4 +1,6 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, net, protocol } from "electron";
+import path from "node:path";
+import url from "node:url";
 
 import { ENTRY } from "./app/constants";
 import { setState } from "./app/state";
@@ -31,14 +33,23 @@ const createWindow = (): void => {
   handleExternalEvents();
 
   mainWindow.loadURL(ENTRY);
+  // mainWindow.loadURL("http://localhost:3001");
 
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
     setState({ mainWindowId: mainWindow.id });
+    // mainWindow.webContents.openDevTools();
   });
 };
 
-app.whenReady().then(createMenu).then(createWindow);
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: "dayo",
+    privileges: { bypassCSP: true, secure: true, supportFetchAPI: true },
+  },
+]);
+
+app.whenReady().then(registerProtocol).then(createMenu).then(createWindow);
 app.on("web-contents-created", onWebContentsCreated);
 
 app.on("window-all-closed", () => {
@@ -52,3 +63,12 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+function registerProtocol() {
+  protocol.handle("dayo", (request) => {
+    const filePath = request.url.slice("dayo://".length);
+    return net.fetch(
+      url.pathToFileURL(path.join(__dirname, "..", filePath)).toString()
+    );
+  });
+}

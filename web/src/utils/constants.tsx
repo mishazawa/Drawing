@@ -15,3 +15,5 @@ export const KEY_RIGHT = "ArrowRight";
 export const KEY_ESC = "Escape";
 
 export const HIDE_TIME = 3000;
+export const MODEL_URL = "dayo://model/model.json";
+// export const MODEL_URL = "/model/model.json";

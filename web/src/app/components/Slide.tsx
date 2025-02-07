@@ -4,9 +4,10 @@ import Image from "next/image";
 
 import If from "@/app/components/If";
 import { useDataStore } from "@/store/providers/data";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { usePanZoom } from "@/app/hooks/usePanZoom";
+import { useAutoZoom } from "../hooks/useAutoZoom";
 
 export function Slide() {
   const slides = useDataStore((s) => s.slides);
@@ -30,21 +31,39 @@ export function Slide() {
   }, [current, slides]);
 
   const [image] = usePanZoom([src]);
+  useAutoZoom(image, [src]);
 
   return (
     <>
       <If v={!!src}>
         <div className="flex-1 w-full relative flex justify-center align-center overflow-hidden">
+          {/* <If v={autozoom !== null}>
+            <div
+              style={{
+                position: "absolute",
+                left: autozoom ? autozoom!.x : 0,
+                top: autozoom ? autozoom!.y : 0,
+                width: autozoom ? autozoom!.w : 0,
+                height: autozoom ? autozoom!.h : 0,
+                backgroundColor: "#FF00FF33",
+                zIndex: 999,
+              }}
+            >
+              debug
+            </div>
+          </If> */}
           <Image
             ref={image}
-            className="object-scale-down object-center"
             src={src}
             fill
+            className="object-scale-down object-center"
             alt="/"
           />
         </div>
       </If>
-      <If v={!src}>no slides</If>
+      <If v={!src}>
+        <div className="object-scale-down object-center">no slides</div>
+      </If>
     </>
   );
 }

@@ -15,6 +15,13 @@ export type State = {
   reset: number;
   pause: boolean;
   shuffle: boolean;
+  autozoom: null | {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    ratio: number;
+  };
 };
 
 export type Actions = {
@@ -38,6 +45,7 @@ const initialState: State = {
   reset: 0,
   pause: false,
   shuffle: false,
+  autozoom: null,
 };
 
 export const initMenuStore = (): State => {

@@ -1,3 +1,4 @@
+import { useDataStore } from "@/store/providers/data";
 import panzoom, { PanZoom } from "panzoom";
 import { useEffect, useRef } from "react";
 
@@ -8,6 +9,7 @@ const ZOOM_CONFIG = {
   bounds: true,
   boundsPadding: 1,
   smoothScroll: false,
+  transformOrigin: { x: 0.5, y: 0.5 },
   filterKey: () => true,
 };
 
@@ -24,6 +26,14 @@ export function usePanZoom(deps: any[]) {
   useEffect(() => {
     return () => zoomer.current && zoomer.current.dispose();
   }, []);
+
+  const zoom = useDataStore((s) => s.autozoom);
+
+  useEffect(() => {
+    if (!zoomer.current) return;
+    if (!zoom) return;
+    zoomer.current.smoothZoomAbs(zoom.x, zoom.y, zoom.ratio);
+  }, [zoom]);
 
   return [image];
 }

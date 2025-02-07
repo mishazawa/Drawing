@@ -6,4 +6,13 @@ import { contextBridge, ipcRenderer } from "electron";
 contextBridge.exposeInMainWorld("electron", {
   preventSleep: (val: boolean) => ipcRenderer.send("prevent-sleep", val),
   openExternal: (val: string) => ipcRenderer.send("open-external", val),
+  getSettings: () => {
+    return new Promise((res) => {
+      ipcRenderer.on("settings", (_, data) => {
+        ipcRenderer.removeAllListeners("settings");
+        res(data);
+      });
+      ipcRenderer.send("settings");
+    });
+  },
 });

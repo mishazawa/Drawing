@@ -4,6 +4,7 @@ import { Slide } from "@/app/components/Slide";
 import { LeftArrow } from "@/app/components/Icons";
 import { EventScreenHandler } from "@/app/components/EventScreenHandler";
 import { Controls } from "@/app/components/ControlsHandler";
+import { YoloDownloadHandler } from "@/app/components/YoloDownloadHandler";
 
 export default function Home() {
   return (
@@ -17,7 +18,9 @@ export default function Home() {
         <div className="fixed right-5 z-10">
           <Timer />
         </div>
-        <Slide />
+        <YoloDownloadHandler>
+          <Slide />
+        </YoloDownloadHandler>
         <div className="fixed bottom-5 left-0 right-0">
           <Controls />
         </div>
