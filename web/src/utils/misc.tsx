@@ -31,3 +31,74 @@ export function shuffle(array: any[]) {
   }
   return copy;
 }
+
+export function noop(...args: any) {}
+
+export function compressImage(
+  base: string,
+  ratio: number = 1
+): Promise<string> {
+  return new Promise((res) => {
+    const img = document.createElement("img");
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d")!;
+      const oc = document.createElement("canvas");
+      const octx = oc.getContext("2d")!;
+
+      const width = img.width * ratio;
+
+      canvas.width = width; // destination canvas size
+      canvas.height = (canvas.width * img.height) / img.width;
+
+      let cur = {
+        width: Math.floor(img.width * 0.5),
+        height: Math.floor(img.height * 0.5),
+      };
+
+      oc.width = cur.width;
+      oc.height = cur.height;
+
+      octx.drawImage(img, 0, 0, cur.width, cur.height);
+
+      while (cur.width * 0.5 > width) {
+        cur = {
+          width: Math.floor(cur.width * 0.5),
+          height: Math.floor(cur.height * 0.5),
+        };
+        octx.drawImage(
+          oc,
+          0,
+          0,
+          cur.width * 2,
+          cur.height * 2,
+          0,
+          0,
+          cur.width,
+          cur.height
+        );
+      }
+
+      ctx.drawImage(
+        oc,
+        0,
+        0,
+        cur.width,
+        cur.height,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+      const data = canvas.toDataURL();
+      img.remove();
+      canvas.remove();
+      oc.remove();
+
+      return res(data);
+    };
+
+    img.src = base;
+  });
+}

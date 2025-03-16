@@ -1,4 +1,4 @@
-import { ValuesClassMode } from "./ValuesClassMode";
+import { ValuesCoopMode } from "./ValuesCoopMode";
 import { ValuesTimeMode } from "./ValuesTimeMode";
 import { InputFolder } from "./InputFolder";
 import { StartButton } from "./StartButton";
@@ -13,7 +13,7 @@ export function Menu() {
         <StartButton />
       </div>
       <ValuesTimeMode />
-      <ValuesClassMode />
+      <ValuesCoopMode />
       <ToggleShuffle />
       <InputFolder />
     </div>

@@ -16,7 +16,7 @@ export function ToggleMode() {
     <div className="flex items-center gap-x-4">
       <Toggle
         value={mode === MODE_CLASS}
-        text="Class"
+        text="Coop"
         leftText="Time"
         onChange={toggleMode}
       />

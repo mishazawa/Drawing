@@ -4,12 +4,16 @@ import Image from "next/image";
 
 import If from "@/app/components/If";
 import { useDataStore } from "@/store/providers/data";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { usePanZoom } from "@/app/hooks/usePanZoom";
 import { useAutoZoom } from "../hooks/useAutoZoom";
 
-export function Slide() {
+type SlideProps = {
+  syncImage?: (img: string) => void;
+};
+
+export function Slide({ syncImage }: SlideProps) {
   const slides = useDataStore((s) => s.slides);
   const current = useDataStore((s) => s.currentSlide);
   const [src, set] = useState("");
@@ -23,6 +27,7 @@ export function Slide() {
       () => {
         // convert image file to base64 string
         set(reader.result as string);
+        syncImage && syncImage(reader.result as string);
       },
       false
     );
@@ -52,6 +57,30 @@ export function Slide() {
               debug
             </div>
           </If> */}
+          <Image
+            ref={image}
+            src={src}
+            fill
+            className="object-scale-down object-center"
+            alt="/"
+          />
+        </div>
+      </If>
+      <If v={!src}>
+        <div className="object-scale-down object-center">no slides</div>
+      </If>
+    </>
+  );
+}
+
+export function Base64Slide({ src }: { src: string }) {
+  const [image] = usePanZoom([src]);
+  useAutoZoom(image, [src]);
+
+  return (
+    <>
+      <If v={!!src}>
+        <div className="flex-1 w-full relative flex justify-center align-center overflow-hidden">
           <Image
             ref={image}
             src={src}

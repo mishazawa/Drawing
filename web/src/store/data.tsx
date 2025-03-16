@@ -4,6 +4,7 @@ import { createStore } from "zustand/vanilla";
 type TimingMode = "time" | "class";
 
 export type State = {
+  sessionId: string | null;
   mode: TimingMode;
   time: number;
   timeCustom: number;
@@ -35,6 +36,7 @@ export type Actions = {
 };
 
 const initialState: State = {
+  sessionId: null,
   mode: MODE_TIME,
   time: TIME_CONFIG[0][1],
   timeCustom: 1,
